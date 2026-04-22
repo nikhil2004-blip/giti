@@ -1,0 +1,25 @@
+{
+  "name": "giti",
+  "version": "1.0.0",
+  "description": "Natural-language Git command lookup — offline, fuzzy, instant",
+  "main": "src/index.js",
+  "bin": {
+    "giti": "./bin/giti.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "index.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build-index": "node scripts/build-index.js",
+    "test": "node --test tests/index.test.js"
+  },
+  "keywords": ["git", "cli", "fuzzy", "natural-language", "developer-tools"],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

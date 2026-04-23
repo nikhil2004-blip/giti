@@ -1,13 +1,13 @@
 # 🌌 giti
 
-[![npm version](https://img.shields.io/badge/npm-v1.0.2-blue.svg)](https://www.npmjs.com/package/gitnik)
+[![npm version](https://img.shields.io/badge/npm-v1.0.2-blue.svg)](https://www.npmjs.com/package/@nikhil2004-blip/giti-go)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > **Natural-language Git command lookup — hybrid, fuzzy, instant.**
 
 ![giti Banner](assets/banner.png)
 
-**Package name:** `gitnik@nikhil2004-blip/giti-go` | **CLI command:** `giti`
+**Package name:** `@nikhil2004-blip/giti-go` | **CLI command:** `giti`
 
 ---
 
@@ -16,8 +16,6 @@
 Choose your preferred installation method:
 
 ```bash
-npm install -g gitnik
-# OR
 npm install -g @nikhil2004-blip/giti-go
 ```
 
@@ -74,7 +72,7 @@ npm pack --dry-run
 
 ## 🚢 Publishing
 
-If you are publishing the package yourself, the npm package name is `gitnik@nikhil2004-blip/giti-go` and the CLI command stays `giti`:
+If you are publishing the package yourself, the npm package name is `@nikhil2004-blip/giti-go` and the CLI command stays `giti`:
 
 ```bash
 git add .

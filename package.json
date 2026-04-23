@@ -1,6 +1,6 @@
 {
   "name": "@nikhil2004-blip/giti-go",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Natural-language Git command lookup — offline, fuzzy, instant",
   "main": "src/index.js",
   "bin": {
@@ -20,7 +20,13 @@
     "build-index": "node scripts/build-index.js",
     "test": "node --test tests/index.test.js"
   },
-  "keywords": ["git", "cli", "fuzzy", "natural-language", "developer-tools"],
+  "keywords": [
+    "git",
+    "cli",
+    "fuzzy",
+    "natural-language",
+    "developer-tools"
+  ],
   "author": "",
   "license": "MIT",
   "engines": {

@@ -1,6 +1,7 @@
 # giti
 
 > Natural-language Git command lookup — hybrid, fuzzy, instant.
+## npm install -g @nikhil2004-blip/giti-go@latest
 
 ![giti banner](assets/banner.png)
 

@@ -1,7 +1,5 @@
 'use strict';
 
-const fs = require('fs');
-
 function generateCompletion(shell) {
   const { INTENTS } = require('./data/intents');
   const { tokenize } = require('./nlp');

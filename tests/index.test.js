@@ -96,9 +96,6 @@ const GOLDEN = [
   { query: 'shallow clone',              expectedId: 'REMOTE_03' },
 ];
 
-let passed = 0;
-const total = GOLDEN.length;
-
 for (const { query, expectedId, expectedIds } of GOLDEN) {
   test(`golden: "${query}"`, () => {
     const result = match(query);
@@ -115,7 +112,6 @@ for (const { query, expectedId, expectedIds } of GOLDEN) {
     const targets = expectedIds || [expectedId];
     const hit = targets.some(t => returnedIds.includes(t));
 
-    if (hit) passed++;
     assert.ok(hit, `Expected one of [${targets}] but got [${returnedIds}] for query: "${query}"`);
   });
 }

@@ -2,13 +2,13 @@
 
 > Natural-language Git command lookup — hybrid, fuzzy, instant.
 
-Package name: `gitnik`
+Package name: `@nikhil2004-blip/giti-go`
 CLI command: `giti`
 
 ## Install
 
 ```bash
-npm install -g gitnik
+npm install -g @nikhil2004-blip/giti-go
 ```
 
 After installation, run the tool with `giti`.
@@ -52,7 +52,7 @@ npm pack --dry-run
 
 ## Publishing
 
-If you are publishing the package yourself, the npm package name is `gitnik` and the CLI command stays `giti`:
+If you are publishing the package yourself, the npm package name is `@nikhil2004-blip/giti-go` and the CLI command stays `giti`:
 
 ```bash
 git add .

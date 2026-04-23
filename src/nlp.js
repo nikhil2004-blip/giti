@@ -36,7 +36,6 @@ function stripGitPrefix(tokens) {
 
 const HEX_RE  = /^[0-9a-f]{6,40}$/;
 const FILE_RE = /\.[a-z]{1,5}$/;
-const NUM_RE  = /^\d+$/;  // bare numbers (e.g. "3" in "last 3 commits") kept for context
 
 function stripSpecialTokens(tokens) {
   return tokens.filter(t => !HEX_RE.test(t) && !FILE_RE.test(t));

@@ -205,18 +205,17 @@ function readRateLimitState() {
     ensureSecureConfigDir();
 
     if (!fs.existsSync(RATE_LIMIT_FILE)) {
-        return { windowStart: Date.now(), requests: [], lastQueries: {} };
+        return { requests: [], lastQueries: {} };
     }
 
     try {
         const state = JSON.parse(fs.readFileSync(RATE_LIMIT_FILE, 'utf8'));
         return {
-            windowStart: Number(state.windowStart) || Date.now(),
             requests: Array.isArray(state.requests) ? state.requests.filter(n => Number.isFinite(Number(n))) : [],
             lastQueries: state.lastQueries && typeof state.lastQueries === 'object' ? state.lastQueries : {}
         };
     } catch (e) {
-        return { windowStart: Date.now(), requests: [], lastQueries: {} };
+        return { requests: [], lastQueries: {} };
     }
 }
 
@@ -237,7 +236,6 @@ function checkAiRateLimit(query) {
         const retryAfterMs = RATE_LIMIT_DUPLICATE_WINDOW_MS - (now - lastQueryAt);
         return {
             allowed: false,
-            retryAfterMs,
             message: `Too many repeated AI requests for the same query. Try again in ${Math.ceil(retryAfterMs / 1000)}s.`
         };
     }
@@ -247,7 +245,6 @@ function checkAiRateLimit(query) {
         const retryAfterMs = Math.max(0, RATE_LIMIT_WINDOW_MS - (now - oldest));
         return {
             allowed: false,
-            retryAfterMs,
             message: `AI request rate limit reached. Try again in ${Math.ceil(retryAfterMs / 1000)}s.`
         };
     }

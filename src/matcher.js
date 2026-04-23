@@ -120,7 +120,6 @@ function getCandidates(queryTokens, index) {
 // ─── Main match function ───────────────────────────────────────────────────
 
 const HIGH_CONFIDENCE   = 0.75;
-const MEDIUM_CONFIDENCE = 0.60;
 const MAX_RESULTS       = 3;
 
 function match(rawQuery) {
@@ -152,4 +151,4 @@ function match(rawQuery) {
   return { type: 'fallback' };
 }
 
-module.exports = { match, buildIndex, HIGH_CONFIDENCE, MEDIUM_CONFIDENCE };
+module.exports = { match, buildIndex, HIGH_CONFIDENCE };

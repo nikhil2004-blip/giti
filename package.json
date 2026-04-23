@@ -1,10 +1,10 @@
 {
-  "name": "giti",
-  "version": "1.0.0",
+  "name": "gitnik",
+  "version": "1.0.2",
   "description": "Natural-language Git command lookup — offline, fuzzy, instant",
   "main": "src/index.js",
   "bin": {
-    "giti": "./bin/giti.js"
+    "giti": "bin/giti.js"
   },
   "files": [
     "bin",
@@ -12,6 +12,9 @@
     "index.json",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build-index": "node scripts/build-index.js",
     "test": "node --test tests/index.test.js"

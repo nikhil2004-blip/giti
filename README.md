@@ -2,11 +2,16 @@
 
 > Natural-language Git command lookup — hybrid, fuzzy, instant.
 
+Package name: `gitnik`
+CLI command: `giti`
+
 ## Install
 
 ```bash
-npm install -g giti
+npm install -g gitnik
 ```
+
+After installation, run the tool with `giti`.
 
 ## Quick Start
 
@@ -20,7 +25,7 @@ giti squash last 3 commits
 
 ## Usage
 
-Run giti with a plain-English Git question:
+Run the `giti` command with a plain-English Git question:
 
 ```bash
 giti <your question in plain English>
@@ -47,7 +52,7 @@ npm pack --dry-run
 
 ## Publishing
 
-If you are publishing the package yourself:
+If you are publishing the package yourself, the npm package name is `gitnik` and the CLI command stays `giti`:
 
 ```bash
 git add .
@@ -56,6 +61,8 @@ git push origin master
 npm login
 npm publish
 ```
+
+The package is configured for public publishing, so you do not need to pass `--access public` manually.
 
 ## Security Notes
 

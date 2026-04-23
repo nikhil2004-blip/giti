@@ -11,7 +11,8 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const VERSION = '1.0.0';
+const { version } = require('../package.json');
+const VERSION = version;
 const MISSED_LOG_MAX_BYTES = 1024 * 1024;
 
 function redactSensitiveText(input) {

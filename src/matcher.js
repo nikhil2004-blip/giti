@@ -3,9 +3,22 @@
 const { preProcess, tokenSimilarity } = require('./nlp');
 const { INTENTS } = require('./data/intents');
 
+// Keep offline matching focused on high-frequency daily workflows.
+const CORE_CATEGORIES = new Set([
+  'Stage & Unstage',
+  'Commit',
+  'Branches',
+  'Remote & Sync',
+  'Stash',
+  'History & Log',
+  'Status & Diff',
+]);
+
+const ACTIVE_INTENTS = INTENTS.filter((intent) => CORE_CATEGORIES.has(intent.category));
+
 // ─── Intent map ────────────────────────────────────────────────────────────
 
-const INTENT_MAP = Object.fromEntries(INTENTS.map(i => [i.id, i]));
+const INTENT_MAP = Object.fromEntries(ACTIVE_INTENTS.map(i => [i.id, i]));
 
 // ─── Inverted index ────────────────────────────────────────────────────────
 
@@ -30,7 +43,7 @@ function buildIndex() {
   const invertedIndex = {};  // token → string[]
   const intentTokens  = {};  // intentId → string[][]
 
-  for (const intent of INTENTS) {
+  for (const intent of ACTIVE_INTENTS) {
     intentTokens[intent.id] = [];
     for (const phrase of intent.phrases) {
       const tokens = preProcess(phrase);
@@ -111,7 +124,7 @@ function getCandidates(queryTokens, index) {
   }
 
   if (candidates.size === 0) {
-    for (const intent of INTENTS) candidates.add(intent.id);
+    for (const intent of ACTIVE_INTENTS) candidates.add(intent.id);
   }
 
   return candidates;

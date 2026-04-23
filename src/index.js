@@ -105,11 +105,15 @@ function run(argv) {
       const { askAI } = require('./ai');
       console.log(`\n\x1b[36m⠋\x1b[0m Asking AI for a suggestion...`);
 
-      askAI(rawQuery).then((aiCommand) => {
+      askAI(rawQuery).then(({ command, warning }) => {
         // Clear the asking message
         process.stdout.write('\x1b[1A\x1b[2K\x1b[1A\x1b[2K'); 
         console.log(`\n\x1b[35m✨ AI Suggestion:\x1b[0m\n`);
-        console.log(`  ❯ ${aiCommand}\n`);
+        console.log(`  ❯ ${command}`);
+        if (warning) {
+          console.log(`\n  \x1b[33m⚠ Warning:\x1b[0m ${warning}`);
+        }
+        console.log();
       }).catch((err) => {
         process.stdout.write('\x1b[1A\x1b[2K\x1b[1A\x1b[2K'); // clear loading
         

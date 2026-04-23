@@ -190,6 +190,16 @@ function writeConfig(config) {
     fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2), { mode: CONFIG_FILE_MODE });
 }
 
+function readConfig() {
+    if (!fs.existsSync(CONFIG_FILE)) return {};
+    try {
+        const config = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+        return config && typeof config === 'object' ? config : {};
+    } catch (e) {
+        return {};
+    }
+}
+
 function normalizeQuery(query) {
     return String(query || '')
         .toLowerCase()
@@ -263,13 +273,26 @@ function sanitizeCommand(raw) {
         .trim();
 }
 
-function isSafeGitCommand(command) {
-    if (!command) return false;
-    if (!/^git(?:\s|$)/i.test(command)) return false;
-    if (/[\r\n]/.test(command)) return false;
-    // Block shell control operators and redirection characters.
-    if (/[;&|><`$]/.test(command)) return false;
-    return true;
+function assessGitCommandRisk(command) {
+    if (!command) return { valid: false, risky: false, reason: 'Empty command.' };
+    if (!/^git(?:\s|$)/i.test(command)) return { valid: false, risky: false, reason: 'Not a git command.' };
+    if (/[\r\n]/.test(command)) return { valid: false, risky: false, reason: 'Multi-line command is not allowed.' };
+
+    const normalized = command.replace(/<[^<>\r\n]+>/g, '__ARG__');
+    const riskyPatterns = [
+        /\b(?:rm|curl|wget|chmod|sudo|eval)\b/i,
+        /`|\$\(|\$\w+/,
+        /;/,
+        /(^|[^&])&(?!&)/,
+        /(^|\s)\d*(?:>|<|<<)(?=\s|$)/,
+    ];
+
+    const risky = riskyPatterns.some((re) => re.test(normalized));
+    return {
+        valid: true,
+        risky,
+        reason: risky ? 'This suggestion contains potentially risky shell patterns. Review before running.' : null,
+    };
 }
 
 /**
@@ -312,7 +335,7 @@ function getApiKey() {
     // 3. Check Local Config File
     if (fs.existsSync(CONFIG_FILE)) {
         try {
-            const config = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+            const config = readConfig();
             if (config.apiKeyEncrypted) {
                 const decrypted = decryptApiKey(config.apiKeyEncrypted);
                 if (decrypted) return { key: decrypted, source: 'config' };
@@ -360,9 +383,7 @@ function getApiKey() {
 function setApiKey(key) {
     if (!key || !String(key).trim()) return false;
 
-    const config = fs.existsSync(CONFIG_FILE) 
-        ? JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8')) 
-        : {};
+    const config = readConfig();
 
     const apiKey = String(key).trim();
     if (canUseWindowsKeychain()) {
@@ -435,10 +456,13 @@ If the request is not related to git, reply exactly with 'UNKNOWN'.`;
                             let command = sanitizeCommand(parsed.choices[0].message.content);
                             if (command === 'UNKNOWN' || command === '"UNKNOWN"') {
                                 reject(new Error("Not a git command."));
-                            } else if (!isSafeGitCommand(command)) {
-                                reject(new Error("Unsafe AI command rejected."));
                             } else {
-                                resolve(command);
+                                const risk = assessGitCommandRisk(command);
+                                if (!risk.valid) {
+                                    reject(new Error(risk.reason || 'Invalid AI command.'));
+                                    return;
+                                }
+                                resolve({ command, warning: risk.reason });
                             }
                         } catch (e) {
                             reject(new Error("Failed to parse AI response."));
@@ -486,4 +510,4 @@ If the request is not related to git, reply exactly with 'UNKNOWN'.`;
     });
 }
 
-module.exports = { askAI, setApiKey };
+module.exports = { askAI, setApiKey, __private: { assessGitCommandRisk } };
